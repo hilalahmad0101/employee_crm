@@ -1,0 +1,79 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+
+class AdminController extends Controller
+{
+    public function index(Request $request)
+    {
+        $search = $request->input('search');
+        $sortBy = $request->input('sortBy',  'asc');
+
+        $admins = User::query()->when(
+            $search,
+            fn($query) =>
+            $query->where('name', 'LIKE', '%' . $search . '%')
+                ->where('id', '!=', auth()->id())
+                ->orWhere('email', 'LIKE', '%' . $search . '%')
+        )->where('id', '!=', auth()->id())->orderby('name', $sortBy)->paginate(10)->withQueryString();;
+        return Inertia::render('admin/List', [
+            'admins' => $admins,
+            'filters' => [
+                'sortBy' => $sortBy,
+                'search' => $search,
+            ],
+        ]);
+    }
+
+    public function create()
+    {
+        return Inertia::render('admin/Create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|unique:users,email',
+            'password' => 'required',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+        return redirect()->route('admins.list')->with('success', 'Admin create successfully');
+    }
+
+    public function show(User $user)
+    {
+        return Inertia::render('admin/Update', [
+            'user' => $user
+        ]);
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|unique:users,email,' . $user->id,
+        ]);
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email
+        ]);
+        return redirect()->route('admins.list')->with('success', 'Admin update successfully');
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return redirect()->route('admins.list')->with('success', 'Admin Delete successfully');
+    }
+}

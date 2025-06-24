@@ -19,7 +19,7 @@ class CompanyController extends Controller
             $query->where('name', 'LIKE', '%' . $search . '%')
                 ->orWhere('email', 'LIKE', '%' . $search . '%')
                 ->orWhere('address', 'LIKE', '%' . $search . '%')
-        )->orderby('name', $sortBy)->paginate(10)->withQueryString();;
+        )->orderby('name', $sortBy)->paginate(10)->withQueryString();
         return Inertia::render('companies/List', [
             'companies' => $companies,
             'filters' => [
@@ -77,6 +77,6 @@ class CompanyController extends Controller
     public function destroy(Company $company)
     {
         $company->delete();
-        return to_route('companies.list')->with('toast', 'Record Delete successfully');
+        return back()->with('toast', 'Record Delete successfully');
     }
 }
