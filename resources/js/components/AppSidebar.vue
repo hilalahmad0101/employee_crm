@@ -5,7 +5,7 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, Lock,Building2,Users } from 'lucide-vue-next';
+import { BookOpen, Folder, LayoutGrid, Lock, Building2, Users, Diamond } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -27,7 +27,12 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Employee',
         href: '/employees',
-        icon: Users ,
+        icon: Users,
+    },
+    {
+        title: 'Invitations',
+        href: '/invitations',
+        icon: Diamond,
     },
 ];
 

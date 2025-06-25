@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InvitationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -39,7 +40,11 @@ Route::get('/admins/{user}/edit', [AdminController::class, 'show'])->name('admin
 Route::post('/admins/update/{user}', [AdminController::class, 'update'])->name('admins.update');
 Route::delete('/admins/delete/{user}', [AdminController::class, 'destroy'])->name('admins.delete');
 
-Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::get('/invitations', [InvitationController::class, 'index'])->name('invitations.list');
+Route::get('/invitations/create', [InvitationController::class, 'create'])->name('invitations.create');
+Route::post('/send/invitations', [InvitationController::class, 'sendInvitation'])->name('invitations.send');
 
 
 Route::get('/check', function () {
