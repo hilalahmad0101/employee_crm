@@ -29,6 +29,14 @@ const props = defineProps({
     totalCompanies: {
         type: Number,
         default: null
+    },
+    totalInvitation: {
+        type: Number,
+        default: null
+    },
+    totalUsers: {
+        type: Number,
+        default: null
     }
 });
 
@@ -107,11 +115,12 @@ watch(() => $page.toast, (newVal) => {
         <div class="flex h-full flex-1 flex-col gap-6 p-6">
             <!-- Dashboard Title -->
             <div>
-                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white"
+                    :class="$page.auth.user.role == 'admin' ? '' : 'hidden'">Dashboard</h1>
             </div>
 
             <!-- Stats Cards -->
-            <div class="grid gap-6 md:grid-cols-3">
+            <div class="grid gap-6 md:grid-cols-3" :class="$page.auth.user.role == 'admin' ? '' : 'hidden'">
                 <!-- Total Companies Card -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
                     <div class="flex flex-col">
@@ -124,7 +133,7 @@ watch(() => $page.toast, (newVal) => {
                 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
                     <div class="flex flex-col">
                         <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Employees</span>
-                        <span class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ totalEmployees }}</span>
+                        <span class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ totalUsers }}</span>
                     </div>
                 </div>
 
@@ -132,8 +141,7 @@ watch(() => $page.toast, (newVal) => {
                 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
                     <div class="flex flex-col">
                         <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Pending Invitations</span>
-                        <span class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ pendingInvitations
-                            }}</span>
+                        <span class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ totalInvitation }}</span>
                     </div>
                 </div>
             </div>
@@ -200,14 +208,16 @@ watch(() => $page.toast, (newVal) => {
                                 </div>
 
                                 <!-- Create Company Button -->
-                                <button @click="createCompany"
-                                    class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
-                                    <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 4v16m8-8H4" />
-                                    </svg>
-                                    Create Company
-                                </button>
+                                <div :class="$page.auth.user.role == 'admin' ? '' : 'hidden'">
+                                    <button @click="createCompany"
+                                        class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                                        <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 4v16m8-8H4" />
+                                        </svg>
+                                        Create Company
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -230,7 +240,7 @@ watch(() => $page.toast, (newVal) => {
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                         Address
                                     </th>
-                                    <th
+                                    <th :class="$page.auth.user.role == 'admin' ? '' : 'hidden'"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                         Action
                                     </th>
@@ -256,7 +266,8 @@ watch(() => $page.toast, (newVal) => {
                                         </div>
                                     </td>
 
-                                    <td class="px-6 py-4 whitespace-nowrap space-x-4">
+                                    <td class="px-6 py-4 whitespace-nowrap space-x-4"
+                                        :class="$page.auth.user.role == 'admin' ? '' : 'hidden'">
                                         <Link :href="`companies/${company.id}/edit`">
                                         <Button
                                             class="bg-green-400/50 text-white hover:bg-green-500 cursor-pointer">Edit</Button>
@@ -282,10 +293,13 @@ watch(() => $page.toast, (newVal) => {
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                             Get started by creating a new company.
                         </p>
-                        <button @click="createCompany"
-                            class="mt-4 inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md transition-colors duration-200">
-                            Create Your First Company
-                        </button>
+                        <div :class="$page.auth.user.role == 'admin' ? '' : 'hidden'">
+
+                            <button @click="createCompany"
+                                class="mt-4 inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md transition-colors duration-200">
+                                Create Your First Company
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Enhanced Pagination -->

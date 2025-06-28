@@ -4,35 +4,42 @@ import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { BookOpen, Folder, LayoutGrid, Lock, Building2, Users, Diamond } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
-const mainNavItems: NavItem[] = [
+const { props: $page } = usePage();
+const mainNavItems = [
     {
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
+        role: 1,
+
     },
     {
         title: 'Admins',
         href: '/admins',
         icon: Lock,
+        role: $page.auth.user?.role == 'admin' ? 1 : 0
     },
     {
         title: 'Company',
         href: '/companies',
         icon: Building2,
+         role: 1
     },
     {
         title: 'Employee',
         href: '/employees',
         icon: Users,
+         role: $page.auth.user?.role == 'admin' ? 1 : 0
     },
     {
         title: 'Invitations',
         href: '/invitations',
         icon: Diamond,
+         role: $page.auth.user?.role == 'admin' ? 1 : 0
     },
 ];
 

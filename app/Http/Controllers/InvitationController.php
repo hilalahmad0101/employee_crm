@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendCompanyInvitation;
 use App\Models\Company;
+use App\Models\Employee;
 use App\Models\Invitation;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -64,6 +66,20 @@ class InvitationController extends Controller
             'name' => $company->name,
             'address' => $company->address
         ];
+
+        Employee::create([
+            'company_id' => $request->company_id,
+            'email' => $request->email,
+            'uuid' => $invitation->uuid,
+        ]);
+
+        User::create([
+            'email' => $request->email,
+            'name' => '',
+            'password' => '',
+            'role' => 'employee',
+            'uuid' => $invitation->uuid
+        ]);
 
         \Mail::to($request->email)->send(new SendCompanyInvitation($details));
 

@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import InputError from '@/components/InputError.vue';
 import TextLink from '@/components/TextLink.vue';
+import Toast from '@/components/Toast.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthBase from '@/layouts/AuthLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import { ref, watch } from 'vue';
+const { props: $page } = usePage()
 
+console.log($page);
+const toastVisible = ref(false)
 defineProps<{
     status?: string;
-    canResetPassword: boolean;
 }>();
 
 const form = useForm({
@@ -25,49 +29,39 @@ const submit = () => {
         onFinish: () => form.reset('password'),
     });
 };
+
+watch(() => $page.toast, (newVal) => {
+    if (newVal) {
+        toastVisible.value = true
+        setTimeout(() => (toastVisible.value = false), 4000)
+    }
+})
 </script>
 
 <template>
     <AuthBase title="Log in to your account" description="Enter your email and password below to log in">
+
         <Head title="Log in" />
 
         <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
             {{ status }}
+        </div>
+        <div v-if="$page.toast" class="mb-4 text-center text-sm font-medium text-green-600">
+            {{ $page.toast}}
         </div>
 
         <form @submit.prevent="submit" class="flex flex-col gap-6">
             <div class="grid gap-6">
                 <div class="grid gap-2">
                     <Label for="email">Email address</Label>
-                    <Input
-                        id="email"
-                        type="email"
-                        required
-                        autofocus
-                        :tabindex="1"
-                        autocomplete="email"
-                        v-model="form.email"
-                        placeholder="email@example.com"
-                    />
+                    <Input id="email" type="email" required autofocus :tabindex="1" autocomplete="email"
+                        v-model="form.email" placeholder="email@example.com" />
                     <InputError :message="form.errors.email" />
                 </div>
 
                 <div class="grid gap-2">
-                    <div class="flex items-center justify-between">
-                        <Label for="password">Password</Label>
-                        <TextLink v-if="canResetPassword" :href="route('password.request')" class="text-sm" :tabindex="5">
-                            Forgot password?
-                        </TextLink>
-                    </div>
-                    <Input
-                        id="password"
-                        type="password"
-                        required
-                        :tabindex="2"
-                        autocomplete="current-password"
-                        v-model="form.password"
-                        placeholder="Password"
-                    />
+                    <Input id="password" type="password" required :tabindex="2" autocomplete="current-password"
+                        v-model="form.password" placeholder="Password" />
                     <InputError :message="form.errors.password" />
                 </div>
 
@@ -83,11 +77,7 @@ const submit = () => {
                     Log in
                 </Button>
             </div>
-
-            <div class="text-center text-sm text-muted-foreground">
-                Don't have an account?
-                <TextLink :href="route('register')" :tabindex="5">Sign up</TextLink>
-            </div>
         </form>
     </AuthBase>
+    <!-- <Toast :show="toastVisible" :message="$page.toast" /> -->
 </template>

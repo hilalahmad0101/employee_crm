@@ -13,13 +13,18 @@ class AdminController extends Controller
         $search = $request->input('search');
         $sortBy = $request->input('sortBy',  'asc');
 
-        $admins = User::query()->when(
-            $search,
-            fn($query) =>
-            $query->where('name', 'LIKE', '%' . $search . '%')
-                ->where('id', '!=', auth()->id())
-                ->orWhere('email', 'LIKE', '%' . $search . '%')
-        )->where('id', '!=', auth()->id())->orderby('name', $sortBy)->paginate(10)->withQueryString();;
+        $admins = User::query()
+            ->where('role', 'admin')
+            ->where('id', '!=', auth()->id())
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('email', 'LIKE', '%' . $search . '%');
+                });
+            })
+            ->orderBy('name', $sortBy)
+            ->paginate(10)
+            ->withQueryString();
         return Inertia::render('admin/List', [
             'admins' => $admins,
             'filters' => [

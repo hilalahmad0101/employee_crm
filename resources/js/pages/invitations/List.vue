@@ -218,11 +218,11 @@ watch(() => $page.toast, (newVal) => {
                                     <div v-if="invitation.status == 'pending'">
                                         <Button class="bg-blue-400 text-white hover:bg-blue-500">Pending</Button>
                                     </div>
-                                    <div v-if="invitation.status == 'accept'">
-                                        <Button class="bg-blue-400 text-white hover:bg-blue-500">Accept</Button>
+                                    <div v-if="invitation.status == 'accepted'">
+                                        <Button class="bg-green-400 text-white hover:bg-green-500">Accept</Button>
                                     </div>
-                                    <div v-if="invitation.status == 'reject'">
-                                        <Button class="bg-blue-400 text-white hover:bg-blue-500">Reject</Button>
+                                    <div v-if="invitation.status == 'rejected'">
+                                        <Button class="bg-red-400 text-white hover:bg-red-500">Reject</Button>
                                     </div>
                                 </td>
                             </tr>
