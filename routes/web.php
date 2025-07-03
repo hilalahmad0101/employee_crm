@@ -26,7 +26,7 @@ Route::middleware(['guest'])->group(function () {
             return Inertia::render('auth/Login');
         }
         return Inertia::render('employee/Profile', ['token' => $token]);
-    })->name('profile.update');
+    });
 
     Route::post('/password/reset/{token}', [EmployeeController::class, 'passwordReset'])->name('password.reset.emp');
     Route::post('/update/profile/{token}', [EmployeeController::class, 'updateProfile'])->name('update.profile');
