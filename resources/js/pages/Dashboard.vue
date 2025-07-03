@@ -116,11 +116,13 @@ watch(() => $page.toast, (newVal) => {
             <!-- Dashboard Title -->
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white"
-                    :class="$page.auth.user.role == 'admin' ? '' : 'hidden'">Dashboard</h1>
+                    :class="$page.auth.user.role == 'admin' || $page.auth.user.role == 'company' ? '' : 'hidden'">
+                    Dashboard</h1>
             </div>
 
             <!-- Stats Cards -->
-            <div class="grid gap-6 md:grid-cols-3" :class="$page.auth.user.role == 'admin' ? '' : 'hidden'">
+            <div class="grid gap-6 md:grid-cols-3"
+                :class="$page.auth.user.role == 'admin' || $page.auth.user.role == 'company' ? '' : 'hidden'">
                 <!-- Total Companies Card -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
                     <div class="flex flex-col">
@@ -208,7 +210,8 @@ watch(() => $page.toast, (newVal) => {
                                 </div>
 
                                 <!-- Create Company Button -->
-                                <div :class="$page.auth.user.role == 'admin' ? '' : 'hidden'">
+                                <div
+                                    :class="$page.auth.user.role == 'admin' || $page.auth.user.role == 'company' ? '' : 'hidden'">
                                     <button @click="createCompany"
                                         class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                                         <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -240,7 +243,7 @@ watch(() => $page.toast, (newVal) => {
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                         Address
                                     </th>
-                                    <th :class="$page.auth.user.role == 'admin' ? '' : 'hidden'"
+                                    <th :class="$page.auth.user.role == 'admin' || $page.auth.user.role == 'company' ? '' : 'hidden'"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                         Action
                                     </th>
@@ -267,7 +270,7 @@ watch(() => $page.toast, (newVal) => {
                                     </td>
 
                                     <td class="px-6 py-4 whitespace-nowrap space-x-4"
-                                        :class="$page.auth.user.role == 'admin' ? '' : 'hidden'">
+                                        :class="$page.auth.user.role == 'admin' || $page.auth.user.role == 'company' ? '' : 'hidden'">
                                         <Link :href="`companies/${company.id}/edit`">
                                         <Button
                                             class="bg-green-400/50 text-white hover:bg-green-500 cursor-pointer">Edit</Button>
@@ -293,7 +296,8 @@ watch(() => $page.toast, (newVal) => {
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                             Get started by creating a new company.
                         </p>
-                        <div :class="$page.auth.user.role == 'admin' ? '' : 'hidden'">
+                        <div
+                            :class="$page.auth.user.role == 'admin' || $page.auth.user.role == 'company' ? '' : 'hidden'">
 
                             <button @click="createCompany"
                                 class="mt-4 inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md transition-colors duration-200">

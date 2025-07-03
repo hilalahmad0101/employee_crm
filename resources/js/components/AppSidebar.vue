@@ -27,19 +27,19 @@ const mainNavItems = [
         title: 'Company',
         href: '/companies',
         icon: Building2,
-         role: 1
+        role: $page.auth.user?.role == 'admin' || $page.auth.user?.role == 'company' ? 1 : 0
     },
     {
         title: 'Employee',
         href: '/employees',
         icon: Users,
-         role: $page.auth.user?.role == 'admin' ? 1 : 0
+        role: $page.auth.user?.role == 'admin' || $page.auth.user?.role == 'company' ? 1 : 0
     },
     {
         title: 'Invitations',
         href: '/invitations',
         icon: Diamond,
-         role: $page.auth.user?.role == 'admin' ? 1 : 0
+        role: $page.auth.user?.role == 'admin' || $page.auth.user?.role == 'company' ? 1 : 0
     },
 ];
 

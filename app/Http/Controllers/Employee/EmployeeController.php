@@ -149,11 +149,14 @@ class EmployeeController extends Controller
 
     public function empList(Request $request)
     {
+        $companyId = Auth::user()->companies()->pluck('id')->all();
+        $invitationUuid = Invitation::whereIn('company_id', $companyId)->pluck('uuid');
         $search = $request->input('search');
         $sortBy = $request->input('sortBy', 'asc');
 
         $employees = User::with('profile')
             ->where('role', 'employee')
+            ->whereIn('uuid', $invitationUuid)
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'LIKE', '%' . $search . '%')

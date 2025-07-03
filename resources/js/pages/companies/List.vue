@@ -162,17 +162,18 @@ watch(() => $page.toast, (newVal) => {
                                 </div>
                             </div>
 
-                            <div :class="$page.auth.user.role == 'admin' ?'':'hidden'">
+                            <div
+                                :class="$page.auth.user.role == 'admin' || $page.auth.user.role == 'company' ? '' : 'hidden'">
                                 <!-- Create Company Button -->
                                 <button @click="createCompany"
-                                class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
-                                <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 4v16m8-8H4" />
-                                </svg>
-                                Create Company
-                            </button>
-                        </div>
+                                    class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                                    <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    Create Company
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -195,7 +196,7 @@ watch(() => $page.toast, (newVal) => {
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                     Address
                                 </th>
-                                <th :class="$page.auth.user.role == 'admin' ?'':'hidden'"
+                                <th :class="$page.auth.user.role == 'admin' || $page.auth.user.role == 'company' ? '' : 'hidden'"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                     Action
                                 </th>
@@ -221,7 +222,8 @@ watch(() => $page.toast, (newVal) => {
                                     </div>
                                 </td>
 
-                                <td class="px-6 py-4 whitespace-nowrap space-x-4" :class="$page.auth.user.role == 'admin' ?'':'hidden'">
+                                <td class="px-6 py-4 whitespace-nowrap space-x-4"
+                                    :class="$page.auth.user.role == 'admin' || $page.auth.user.role == 'company' ? '' : 'hidden'">
                                     <Link :href="`companies/${company.id}/edit`">
                                     <Button
                                         class="bg-green-400/50 text-white hover:bg-green-500 cursor-pointer">Edit</Button>
@@ -246,7 +248,7 @@ watch(() => $page.toast, (newVal) => {
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                         Get started by creating a new company.
                     </p>
-                    <div :class="$page.auth.user.role == 'admin' ?'':'hidden'">
+                    <div :class="$page.auth.user.role == 'admin' || $page.auth.user.role == 'company' ? '' : 'hidden'">
                         <button @click="createCompany"
                             class="mt-4 inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md transition-colors duration-200">
                             Create Your First Company

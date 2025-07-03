@@ -15,6 +15,7 @@ class AdminController extends Controller
 
         $admins = User::query()
             ->where('role', 'admin')
+            ->orWhere('role', 'company')
             ->where('id', '!=', auth()->id())
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
@@ -45,12 +46,14 @@ class AdminController extends Controller
             'name' => 'required',
             'email' => 'required|unique:users,email',
             'password' => 'required',
+            'role' => 'required|in:admin,company'
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'role' => $request->role,
         ]);
         return redirect()->route('admins.list')->with('success', 'Admin create successfully');
     }
@@ -67,11 +70,13 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|unique:users,email,' . $user->id,
+            'role' => 'required|in:admin,company'
         ]);
 
         $user->update([
             'name' => $request->name,
-            'email' => $request->email
+            'email' => $request->email,
+            'role' => $request->role,
         ]);
         return redirect()->route('admins.list')->with('success', 'Admin update successfully');
     }

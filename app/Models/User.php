@@ -35,4 +35,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profile::class, 'user_id');
     }
+
+    public function companies()
+    {
+        return $this->hasMany(Company::class, 'admin_id');
+    }
 }

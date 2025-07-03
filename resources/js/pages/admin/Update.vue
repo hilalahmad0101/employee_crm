@@ -34,8 +34,15 @@ const emailInput = ref<HTMLInputElement | null>(null);
 const form = useForm({
     name: props.user.name,
     email: props.user.email,
+    role: props.user.role
 });
 
+const roles = [
+    'admin',
+    'company'
+]
+
+const rolesRef = ref(roles);
 
 
 const updateAdmin = () => {
@@ -85,6 +92,20 @@ const updateAdmin = () => {
                             <Input id="email" ref="emailInput" v-model="form.email" type="email"
                                 class="mt-1 block w-full" autocomplete="email" placeholder="admin@example.com" />
                             <InputError :message="form.errors.email" />
+                        </div>
+
+
+                        <div class="grid gap-2">
+                            <Label for="role">Select Role</Label>
+                            <select id="role" v-model="form.role"
+                                class="mt-1 block border w-full outline-none p-2 text-white bg-gray-800 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <option value="" class="bg-gray-800 text-white">Select a company</option>
+                                <option v-for="(role, index) in rolesRef" :key="index" :value="role"
+                                    class="bg-gray-800 text-white">
+                                    {{ role }}
+                                </option>
+                            </select>
+                            <InputError :message="form.errors.role" />
                         </div>
 
                         <div class="flex items-center gap-4">

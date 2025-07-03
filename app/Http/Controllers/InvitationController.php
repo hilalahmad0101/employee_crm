@@ -8,6 +8,7 @@ use App\Models\Employee;
 use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -15,10 +16,12 @@ class InvitationController extends Controller
 {
     public function index(Request $request)
     {
+        $companies = Auth::user()->companies();
+        $companyId = $companies->pluck("id")->all();
         $search = $request->input('search');
         $sortBy = $request->input('sortBy',  'asc');
 
-        $invitations = Invitation::query()->when(
+        $invitations = Invitation::query()->whereIn('company_id', $companyId)->when(
             $search,
             fn($query) =>
             $query->where('email', 'LIKE', '%' . $search . '%')
@@ -35,7 +38,7 @@ class InvitationController extends Controller
 
     public function create()
     {
-        $companies = Company::latest()->get();
+        $companies = Company::where('admin_id', auth()->id())->latest()->get();
         return Inertia::render('invitations/Create', [
             'companies' => $companies
         ]);

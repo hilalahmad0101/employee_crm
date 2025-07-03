@@ -42,7 +42,7 @@ class DashboardController extends Controller
             }
         }
 
-        $companies = Company::query()->when(
+        $companies = Company::query()->where('admin_id', auth()->id())->when(
             $search,
             fn($query) =>
             $query->where('name', 'LIKE', '%' . $search . '%')
@@ -50,11 +50,13 @@ class DashboardController extends Controller
                 ->orWhere('address', 'LIKE', '%' . $search . '%')
         )->orderby('name', $sortBy)->paginate(10)->withQueryString();
 
+        $companyId = Company::where('admin_id', auth()->id())->pluck('id')->all();
+        $invitationUuid = Invitation::where('company_id', $companyId)->pluck('uuid')->all();
         return Inertia::render('Dashboard', [
             'companies' => $companies,
-            'totalCompanies' => Company::count(),
-            'totalUsers' => User::where('role','employee')->count(),
-            'totalInvitation' => Invitation::where('status','pending')->count(),
+            'totalCompanies' => Company::where('admin_id', auth()->id())->count(),
+            'totalUsers' => User::whereIn('uuid', $invitationUuid)->where('role', 'employee')->count(),
+            'totalInvitation' => Invitation::whereIn('company_id', $companyId)->where('status', 'pending')->count(),
             'filters' => [
                 'sortBy' => $sortBy,
                 'search' => $search,

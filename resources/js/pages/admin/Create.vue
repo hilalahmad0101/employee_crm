@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { type BreadcrumbItem } from '@/types';
 import Card from '@/components/ui/card/Card.vue';
 
+
 const breadcrumbItems: BreadcrumbItem[] = [
     {
         title: 'Admins',
@@ -31,7 +32,15 @@ const form = useForm({
     name: '',
     email: '',
     password: '',
+    role: '',
 });
+
+const roles = [
+    'admin',
+    'company'
+]
+
+const rolesRef = ref(roles);
 
 const createAdmin = () => {
     form.post(route('admins.store'), {
@@ -89,11 +98,24 @@ const createAdmin = () => {
                         </div>
 
                         <div class="grid gap-2">
-                            <Label for="password">Address</Label>
-                            <Input id="password" ref="password" v-model="form.password" type="text"
+                            <Label for="password">Password</Label>
+                            <Input id="password" ref="password" v-model="form.password" type="password"
                                 class="mt-1 block w-full" autocomplete="street-password"
                                 placeholder="Enter admin password" />
                             <InputError :message="form.errors.password" />
+                        </div>
+
+                        <div class="grid gap-2">
+                            <Label for="role">Select Role</Label>
+                            <select id="role" v-model="form.role"
+                                class="mt-1 block border w-full outline-none p-2 text-white bg-gray-800 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <option value="" class="bg-gray-800 text-white">Select a company</option>
+                                <option v-for="(role, index) in rolesRef" :key="index" :value="role"
+                                    class="bg-gray-800 text-white">
+                                    {{ role }}
+                                </option>
+                            </select>
+                            <InputError :message="form.errors.role" />
                         </div>
 
                         <div class="flex items-center gap-4">
@@ -105,6 +127,8 @@ const createAdmin = () => {
                                     successfully.</p>
                             </Transition>
                         </div>
+
+
                     </form>
                 </div>
             </Card>
